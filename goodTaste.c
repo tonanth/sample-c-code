@@ -10,6 +10,16 @@ struct node{
 
 node* head;
 
+void free_nodes(){
+    node* current = head;
+    node* next = head->next;
+    while(current != NULL){
+        next = current->next;
+        free(current);
+        current = next;
+    }
+}
+
 void print_list(){
     node* current = head;
     printf("\n");
@@ -55,7 +65,7 @@ void good_taste_removal(node* entry){
     *indirect = entry->next;
 }
 
-/**
+/*
  * A somewhat crude C implementation of the remove entry in a linked list code presented
  * by the creator of the Linux kernel, Linus Torvalds.
  * Pay no attention to the quality of the boilerplate code, the star of the show are the
@@ -89,5 +99,13 @@ int main(){
     print_list();
     good_taste_removal(nodes[0]);
     print_list();
+
+    //Doing some house cleaning on the removed nodes
+    //Now Valgrind compliant!
+    free(nodes[42]);
+    free(nodes[0]);
+    free(nodes);
+
+    free_nodes();
 }
 
